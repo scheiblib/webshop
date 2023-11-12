@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "226c8847-7a16-4005-ac27-ab727b1b307d",
+		"name": "Thesis",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12996299"
+	},
+	"item": [
+		{
+			"name": "Item",
+			"item": [
+				{
+					"name": "findAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hlaWJsaUBnbWFpbC5jb20iLCJpYXQiOjE2OTc5OTA2OTQsImV4cCI6MTY5ODEzNDY5NH0.759BYpbP0jLAbXHSgXFLiulIbHIMJrTA_A_oXrOCTEQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/items/findAll",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"items",
+								"findAll"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hlaWJsaUBnbWFpbC5jb20iLCJpYXQiOjE2OTg4NTE0MTgsImV4cCI6MTY5ODk5NTQxOH0.9iLhiDrhCbJwYVsh5gdl2yMy7n1oW5Cp41NhB6fdB7M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/items/findItemById/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"items",
+								"findItemById",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Items",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hlaWJsaUBnbWFpbC5jb20iLCJpYXQiOjE2OTk3MDI2OTEsImV4cCI6MTY5OTg0NjY5MX0.IrhhYwy8HA8ReqdGFDmFZckjr7hlxTHX5Snw8nqpckQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"price\":123.0,\r\n        \"size\": 100.0,\r\n        \"colour\":\"white\",\r\n        \"type\":\"shutter\"\r\n    },\r\n    {\r\n        \"price\":123.0,\r\n        \"size\": 100.0,\r\n        \"colour\":\"gray\",\r\n        \"type\":\"szúnyogháló\"\r\n    },\r\n    {\r\n        \"price\":123.0,\r\n        \"size\": 100.0,\r\n        \"colour\":\"green\",\r\n        \"type\":\"reluxa\"\r\n    }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/items/addItems",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"items",
+								"addItems"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "authenticate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hlaWJsaUBnbWFpbC5jb20iLCJpYXQiOjE2OTc5OTA2ODYsImV4cCI6MTY5ODEzNDY4Nn0.W5Tq7xhTitFTIMMv4B9aV_uqs9mKlXbiXnMNKftbn_A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"scheibli@gmail.com\",\r\n    \"password\":\"password\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/authenticate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"authenticate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"Scheibli\",\r\n    \"lastName\":\"Bence\",\r\n    \"email\":\"scheibli@gmail.com\",\r\n    \"password\":\"password\",\r\n    \"city\":\"Győr\",\r\n    \"address\":\"Kereszt\",\r\n    \"phone\":\"01234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find by email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hlaWJsaUBnbWFpbC5jb20iLCJpYXQiOjE2OTg4NTE0MTgsImV4cCI6MTY5ODk5NTQxOH0.9iLhiDrhCbJwYVsh5gdl2yMy7n1oW5Cp41NhB6fdB7M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/users/findUserByEmail/scheibli@gmail.com",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"findUserByEmail",
+								"scheibli@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find all",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "My orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hlaWJsaUBnbWFpbC5jb20iLCJpYXQiOjE2OTg4NTE0MTgsImV4cCI6MTY5ODk5NTQxOH0.9iLhiDrhCbJwYVsh5gdl2yMy7n1oW5Cp41NhB6fdB7M",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/orders/myOrders",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"myOrders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find order by id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hlaWJsaUBnbWFpbC5jb20iLCJpYXQiOjE2OTg4NTE4MjUsImV4cCI6MTY5ODk5NTgyNX0.jOE710jj7ZU2EJl1dK70QKgBpiXVCkhUzfh1UJjS1vE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/orders/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all orders",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Place order",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Add item to order",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzY2hlaWJsaUBnbWFpbC5jb20iLCJpYXQiOjE2OTk3MDMxMzgsImV4cCI6MTY5OTg0NzEzOH0.9_3AA_xGxzSn0TAXdHFklKcg3cxh4pRPE2zQCxNGGBE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/orders/addItem/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"orders",
+								"addItem",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
