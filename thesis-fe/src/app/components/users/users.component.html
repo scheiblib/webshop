@@ -1,0 +1,8 @@
+<h3>Users</h3>
+<div class="grid grid-pad">
+  <li *ngFor="let user of users">
+    <a routerLink="/users/{{user.id}}">
+      {{user.firstName}} {{user.lastName}}
+    </a>
+  </li>
+</div>

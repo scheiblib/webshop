@@ -1,0 +1,25 @@
+<div *ngIf="item">
+  <h2>{{item.type}}</h2>
+  <div>
+    <label for="colour">Szín </label>
+    <select [(ngModel)]="item.colour">
+    <option value="white">Fehér</option>
+    <option value="gray">Szürke</option>
+    <option value="brown">Barna</option>
+    </select>
+  </div>
+  <br>
+  <div>
+    <label for="width">Szélesség</label>
+    <input id="width" type="number" min="100" [(ngModel)]="item.width">
+  </div>
+  <br>
+  <div>
+    <label for="height">Magasság</label>
+    <input id="height" type="number" min="100" [(ngModel)]="item.height">
+  </div>
+  <br><br>
+</div>
+<button type="button" (click)="goBack()">Kosárba</button>
+<br><br>
+<button type="button" (click)="goBack()">Vissza</button>

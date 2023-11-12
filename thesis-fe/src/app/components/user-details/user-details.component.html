@@ -1,0 +1,10 @@
+<div *ngIf="user">
+  <h2>{{user.firstName}} {{user.lastName}} adatai: </h2>
+  <ul>
+    <li>Cím: {{user.city}}, {{user.address}}</li>
+    <li>E-mail: {{user.email}}</li>
+    <li>Telefon: {{user.phone}}</li>
+
+  </ul>
+</div>
+<button type="button" (click)="goBack()">Vissza</button>

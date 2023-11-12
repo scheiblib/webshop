@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="JavaScriptLibraryMappings">
+    <excludedPredefinedLibrary name="thesis/KEYCLOAK_SERVER/keycloak-22.0.3/themes/keycloak/common/resources/node_modules" />
+  </component>
+</project>

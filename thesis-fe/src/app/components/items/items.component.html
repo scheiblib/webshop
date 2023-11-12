@@ -1,0 +1,8 @@
+<h3>Items</h3>
+<div class="grid grid-pad">
+  <li *ngFor="let item of items">
+    <a routerLink="/items/{{item.id}}">
+      {{item.type}}
+    </a>
+  </li>
+</div>
