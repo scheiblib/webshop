@@ -17,16 +17,19 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/findItemById/{id}")
     public Item findById(@PathVariable("id") long id){
         return itemService.findItemById(id);
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/findAll")
     public List<Item> findAll (){
         return itemService.findAll();
     }
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/addItems")
     public List<Item> addItems(@RequestBody List<Item> items) {
         return itemService.addItems(items);
