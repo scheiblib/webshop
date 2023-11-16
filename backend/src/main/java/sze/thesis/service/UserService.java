@@ -20,7 +20,6 @@ import sze.thesis.model.UserResponseDto;
 import sze.thesis.persistence.entity.Role;
 import sze.thesis.persistence.entity.User;
 import sze.thesis.persistence.repository.UserRepository;
-import sze.thesis.service.mapper.UserMapper;
 
 
 import java.util.List;
@@ -32,8 +31,6 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
-    private UserMapper userMapper;
 
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
@@ -46,11 +43,11 @@ public class UserService {
             throw new Exception("User with " + email + " already exist.");
         }
 
-        User user = userMapper.mapForUserRegister(dto);
-        user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+        User user = new User(dto);
+        user.setPassword(new BCryptPasswordEncoder().encode(dto.getPassword()));
         user.setRole(Role.USER);
         user = userRepository.save(user);
-        return userMapper.mapUserEntityToUserResponseDto(user);
+        return new UserResponseDto(user);
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
@@ -63,27 +60,25 @@ public class UserService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow();
         var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
+        return new AuthenticationResponse(jwtToken);
     }
     public UserResponseDto findUserById(long id) throws Exception {
         User maybeUser = userRepository.findById(id)
                 .orElseThrow(() -> new Exception("User with " + id + " id not found"));
-        return userMapper.mapUserEntityToUserResponseDto(maybeUser);
+        return new UserResponseDto(maybeUser);
     }
 
 
     public UserResponseDto findUserByEmail(String email) throws Exception {
         User maybeUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new Exception("User with " + email + " email address not found"));
-        return userMapper.mapUserEntityToUserResponseDto(maybeUser);
+        return new UserResponseDto(maybeUser);
     }
 
-    public List<UserResponseDto> findAllUser() throws Exception {
+    public List<User> findAllUser() throws Exception {
         List<User> userList = userRepository.findAll();
         if(userList != null) {
-            return userMapper.userResponseDtoList(userList);
+            return userList;
         } else {
             throw new Exception("User list is empty.");
         }

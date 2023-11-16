@@ -4,13 +4,9 @@ import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sze.thesis.model.OrderDto;
-import sze.thesis.persistence.entity.Item;
-import sze.thesis.persistence.entity.Order;
-import sze.thesis.persistence.entity.OrderStatus;
-import sze.thesis.persistence.entity.User;
+import sze.thesis.persistence.entity.*;
 import sze.thesis.persistence.repository.ItemRepository;
 import sze.thesis.persistence.repository.OrderRepository;
-import sze.thesis.service.mapper.OrderMapper;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -21,9 +17,6 @@ public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
-
-    @Autowired
-    private OrderMapper orderMapper;
 
     @Autowired
     private ItemService itemService;
@@ -37,9 +30,15 @@ public class OrderService {
         return orderRepository.findById(id);
     }
 
-    public List<OrderDto> findLoggedInUserOrders() {
+    public List<Order> findLoggedInUserOrders() {
         User user = userService.getLoggedUser();
-        return orderMapper.orderResponseDtoList(user.getOrders());
+        return orderRepository.findAllByUser(user);
+    }
+
+    public List<OrderDto> getUserOrderdtoList(){
+        User user = userService.getLoggedUser();
+        ArrayList<OrderDto> result = new ArrayList<>();
+        return convertEntityListToDtoList(orderRepository.findAllByUser(user));
     }
 
     public Order createPendingOrder(){
@@ -52,10 +51,10 @@ public class OrderService {
                 .build();
     }
 
-    public OrderDto getPendingOrder(){
-        List<OrderDto> allOrders = findLoggedInUserOrders();
-        OrderDto pendingOrder = null;
-        for(OrderDto o : allOrders){
+    public Order getPendingOrder(){
+        List<Order> allOrders = findLoggedInUserOrders();
+        Order pendingOrder = null;
+        for(Order o : allOrders){
             if(o.getStatus().equals(OrderStatus.PENDING)){
                 pendingOrder = o;
                 break;
@@ -66,38 +65,46 @@ public class OrderService {
 
     public List<OrderDto> findAll() {
         List<Order> orders = orderRepository.findAll();
-        List<OrderDto> orderDtos = orderMapper.orderResponseDtoList(orders);
+        List<OrderDto> orderDtos = convertEntityListToDtoList(orders);
         return orderDtos;
     }
 
-    public OrderDto addItemToOrder(long itemId){
-        OrderDto pendingOrder = getPendingOrder() == null ?
-                orderMapper.mapOrderEntityToOrderResponseDto(createPendingOrder()) :
+    public Order addItemToOrder(long itemId, ItemInput input){
+        Order pendingOrder = getPendingOrder() == null ?
+                createPendingOrder() :
                 getPendingOrder();
         Item item = itemService.findItemById(itemId);
-        pendingOrder.setTotalPrice(pendingOrder.getTotalPrice() + item.getPrice());
+        item.setColour(input.getColour());
+        item.setSize(input.getSize());
+        item.setPrice(item.getPrice() * item.getSize());
         pendingOrder.getItems().add(item);
-        Order orderToSave = orderMapper.mapForCreateOrder(pendingOrder);
-        orderRepository.save(orderToSave);
+        pendingOrder.setTotalPrice(pendingOrder.getTotalPrice() + item.getPrice());
+        orderRepository.save(pendingOrder);
         return pendingOrder;
     }
 
-    public OrderDto removeItemFromOrder(long itemId) throws Exception {
-        OrderDto pendingOrder = getPendingOrder();
+    public Order removeItemFromOrder(long itemId) throws Exception {
+        Order pendingOrder = getPendingOrder();
         if (pendingOrder == null) {
             throw new Exception("There is no pending order.");
         }
-        pendingOrder.setTotalPrice(pendingOrder.getTotalPrice() - itemRepository.findById(itemId).getPrice());
+//        pendingOrder.setTotalPrice(pendingOrder.getTotalPrice() - itemRepository.findById(itemId).getPrice());
         pendingOrder.getItems().remove(itemRepository.findById(itemId));
-        Order orderToSave = orderMapper.mapForCreateOrder(pendingOrder);
-        orderRepository.save(orderToSave);
+        orderRepository.save(pendingOrder);
         return pendingOrder;
     }
-    public OrderDto placeOrder(){
-        OrderDto orderToSend = getPendingOrder();
+    public Order placeOrder(){
+        Order orderToSend = getPendingOrder();
+        System.out.println("pending: " + orderToSend.toString());
         orderToSend.setStatus(OrderStatus.SENT);
-        Order orderToSave = orderMapper.mapForCreateOrder(orderToSend);
-        orderRepository.save(orderToSave);
+        orderRepository.save(orderToSend);
         return orderToSend;
+    }
+    private List<OrderDto> convertEntityListToDtoList(List<Order> orders){
+        List<OrderDto> result = new ArrayList<>();
+        orders.forEach(order -> {
+            result.add(new OrderDto(order));
+        });
+        return result;
     }
 }

@@ -1,13 +1,11 @@
 package sze.thesis.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import sze.thesis.model.CreateUserDto;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,9 +15,10 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -82,5 +81,20 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public User(CreateUserDto createUser) {
+        this.firstName = createUser.getFirstName();
+        this.lastName = createUser.getLastName();
+        this.email = createUser.getEmail();
+        this.phone = createUser.getPhone();
+        this.city = createUser.getCity();
+        this.address = createUser.getAddress();
+        this.orders = null;
     }
 }

@@ -1,6 +1,7 @@
 package sze.thesis.web.controller;
 
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,8 @@ import java.util.List;
 @RequestMapping(path = "/api/users")
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
     @CrossOrigin(origins = "http://localhost:4200")
     @PostMapping("/register")
@@ -35,14 +37,14 @@ public class UserController {
         return ResponseEntity.ok(userService.authenticate(request));
     }
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/findUserByEmail/{email}")
+    @GetMapping("/user/{email}")
     @ResponseStatus(HttpStatus.OK)
     public UserResponseDto findUserByEmail(@PathVariable("email") String email) throws Exception {
         return userService.findUserByEmail(email);
     }
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/findAllUsers")
-    public List<UserResponseDto> findAll() throws Exception {
+    @GetMapping("/all")
+    public List<User> findAll() throws Exception {
         return userService.findAllUser();
     }
     @CrossOrigin(origins = "http://localhost:4200")

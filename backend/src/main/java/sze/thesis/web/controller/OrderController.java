@@ -4,23 +4,24 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import sze.thesis.model.OrderDto;
+import sze.thesis.persistence.entity.ItemInput;
 import sze.thesis.persistence.entity.Order;
 import sze.thesis.service.OrderService;
 
 import java.util.List;
 
 @RestController
-@AllArgsConstructor
 @RequestMapping(path = "/api/orders")
+@AllArgsConstructor
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/myOrders")
+    @GetMapping("/my_orders")
     public List<OrderDto> getMyOrders() {
-        return orderService.findLoggedInUserOrders();
+        return orderService.getUserOrderdtoList();
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
@@ -30,25 +31,26 @@ public class OrderController {
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/allOrders")
+    @GetMapping("/all")
     public List<OrderDto> getAllOrders() {
         return orderService.findAll();
     }
 
-    @CrossOrigin(origins = "http://localhost:4200")
-    @PutMapping("/addItem/{id}")
-    public OrderDto addItem(@PathVariable("id") long id) {
-        return orderService.addItemToOrder(id);
+//    @CrossOrigin(origins = "http://localhost:4200")
+    @PutMapping("/add_item/{id}")
+    public OrderDto addItem(@PathVariable("id") long id, @RequestBody ItemInput input) {
+        return new OrderDto(orderService.addItemToOrder(id, input));
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @DeleteMapping("/deleteItem/{id}")
+    @DeleteMapping("/delete_item/{id}")
     public OrderDto removeItem(@PathVariable("id") long id) throws Exception {
-        return orderService.removeItemFromOrder(id);
+
+        return new OrderDto(orderService.removeItemFromOrder(id));
     }
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/placeOrder")
+    @PostMapping("/place")
     public OrderDto placeOrder() {
-        return orderService.placeOrder();
+        return new OrderDto(orderService.placeOrder());
     }
 }

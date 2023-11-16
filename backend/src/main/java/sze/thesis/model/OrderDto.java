@@ -13,6 +13,7 @@ import sze.thesis.persistence.entity.User;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,7 +28,34 @@ public class OrderDto implements Serializable {
     @NotBlank
     private LocalDateTime createdAt;
     @NotBlank
-    private User user;
+    private UserDto user;
     @NotBlank
-    private List<Item> items;
+    private List<ItemDto> items;
+
+    public OrderDto(Order order) {
+        this.status = order.getStatus();
+        this.totalPrice = order.getTotalPrice();
+        this.createdAt = order.getCreatedAt();
+        this.user = new UserDto(order.getUser());
+        this.items = createItemDtoList(order);
+    }
+
+    private ArrayList<ItemDto> createItemDtoList(Order order){
+        ArrayList<ItemDto> result = new ArrayList<>();
+        order.getItems().forEach(item -> {
+            result.add(new ItemDto(item));
+        });
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDto{" +
+                "status=" + status +
+                ", totalPrice=" + totalPrice +
+                ", createdAt=" + createdAt +
+                ", user=" + user +
+                ", items=" + items +
+                '}';
+    }
 }

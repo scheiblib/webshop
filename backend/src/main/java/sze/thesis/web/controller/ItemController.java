@@ -2,10 +2,13 @@ package sze.thesis.web.controller;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import sze.thesis.persistence.entity.Item;
+import sze.thesis.persistence.entity.Role;
 import sze.thesis.service.ItemService;
+import sze.thesis.service.UserService;
 
 import java.util.List;
 
@@ -16,22 +19,30 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
+    @Autowired
+    private UserService userService;
+
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/findItemById/{id}")
+    @GetMapping("/item/{id}")
     public Item findById(@PathVariable("id") long id){
         return itemService.findItemById(id);
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @GetMapping("/findAll")
+    @GetMapping("/all")
     public List<Item> findAll (){
         return itemService.findAll();
     }
 
     @CrossOrigin(origins = "http://localhost:4200")
-    @PostMapping("/addItems")
-    public List<Item> addItems(@RequestBody List<Item> items) {
-        return itemService.addItems(items);
+    @PostMapping("/add_multiple")
+    public ResponseEntity<List<Item>> addItems(@RequestBody List<Item> items) {
+
+//        if(userService.getLoggedUser().getRole().equals(Role.USER)){
+//            return ResponseEntity.status(403).build();
+//        }
+
+        return ResponseEntity.ok(itemService.addItems(items));
     }
 }
