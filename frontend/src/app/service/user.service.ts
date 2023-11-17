@@ -1,24 +1,46 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {inject, Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable, of} from "rxjs";
-import {User} from "../model/user";
 import {environment} from "../environment";
-import {USERS} from "../mock-user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
   private apiServerUrl = environment.apiBaseUrl;
-  constructor(private http: HttpClient) { }
 
-  getUsers(): Observable<User[]> {
-    return of(USERS);
-    // return this.http.get<User[]>(`${this.apiServerUrl}/users/findAllUsers`);
+  http: HttpClient = inject(HttpClient);
+
+  login(email: string, password: string): Observable<HttpResponse<void>> {
+    return this.http.post<void>(
+      `${this.apiServerUrl}/users/login`,
+      {email, password},
+      {
+        observe: 'response',
+      }
+    );
   }
-  getUserById(id: number) {
-    const user = USERS.find(u => u.id === id)!;
-    return of(user);
+
+  register(firstName: string,
+           lastName: string,
+           email: string,
+           password: string,
+           phone: string,
+           city: string,
+           address: string) : Observable<void> {
+    return this.http.post<void>(`${this.apiServerUrl}/users/register`, {firstName, lastName, email, password, phone, city, address});
+  }
+
+  profile(): Observable<any> {
+    return this.http.get<any>('/me');
+  }
+
+  getUsers(): Observable<any> {
+    return this.http.get<any>(`${this.apiServerUrl}/users/all`);
+  }
+
+  getUserByEmail(email: string | null) {
+    return this.http.get<any>(`${this.apiServerUrl}/users/${email}`)
   }
 
 }

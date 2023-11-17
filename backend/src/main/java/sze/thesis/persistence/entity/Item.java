@@ -17,10 +17,10 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "item_id")
     private long id;
     private String type;
-    private double size;
+    private double width;
+    private double height;
     private String colour;
     private double price;
 
@@ -34,7 +34,8 @@ public class Item {
         return "Item{" +
                 "id=" + id +
                 ", type='" + type + '\'' +
-                ", size=" + size +
+                ", width=" + width +
+                ", height=" + height +
                 ", colour='" + colour + '\'' +
                 ", price=" + price +
                 '}';

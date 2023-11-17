@@ -16,12 +16,16 @@ import sze.thesis.auth.AuthenticationRequest;
 import sze.thesis.auth.AuthenticationResponse;
 import sze.thesis.configuration.JwtService;
 import sze.thesis.model.CreateUserDto;
+import sze.thesis.model.OrderDto;
+import sze.thesis.model.UserDto;
 import sze.thesis.model.UserResponseDto;
+import sze.thesis.persistence.entity.Order;
 import sze.thesis.persistence.entity.Role;
 import sze.thesis.persistence.entity.User;
 import sze.thesis.persistence.repository.UserRepository;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -75,10 +79,10 @@ public class UserService {
         return new UserResponseDto(maybeUser);
     }
 
-    public List<User> findAllUser() throws Exception {
+    public List<UserDto> findAllUser() throws Exception {
         List<User> userList = userRepository.findAll();
         if(userList != null) {
-            return userList;
+            return convertEntityListToDtoList(userList);
         } else {
             throw new Exception("User list is empty.");
         }
@@ -101,6 +105,14 @@ public class UserService {
     }
     public User getLoggedUser() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()).get();
+    }
+
+    private List<UserDto> convertEntityListToDtoList(List<User> users){
+        List<UserDto> result = new ArrayList<>();
+        users.forEach(user -> {
+            result.add(new UserDto(user));
+        });
+        return result;
     }
 
 }

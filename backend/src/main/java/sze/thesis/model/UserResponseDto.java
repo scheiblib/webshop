@@ -20,11 +20,11 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 public class UserResponseDto extends UserDto {
     private Role role;
-    private List<Order> orders;
+    //private List<OrderDto> orders;
 
     public UserResponseDto(User user) {
         super(user.getFirstName(), user.getLastName(), user.getEmail(), user.getPhone(), user.getCity(), user.getAddress());
         this.role = user.getRole();
-        this.orders = user.getOrders();
+        //this.orders = user.getOrders();
     }
 }

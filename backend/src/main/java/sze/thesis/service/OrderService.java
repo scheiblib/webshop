@@ -1,8 +1,8 @@
 package sze.thesis.service;
 
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sze.thesis.model.ItemInput;
 import sze.thesis.model.OrderDto;
 import sze.thesis.persistence.entity.*;
 import sze.thesis.persistence.repository.ItemRepository;
@@ -26,8 +26,8 @@ public class OrderService {
     @Autowired
     private ItemRepository itemRepository;
 
-    public Order findOrderById(long id){
-        return orderRepository.findById(id);
+    public OrderDto findOrderById(long id){
+        return new OrderDto(orderRepository.findById(id));
     }
 
     public List<Order> findLoggedInUserOrders() {
@@ -53,6 +53,9 @@ public class OrderService {
 
     public Order getPendingOrder(){
         List<Order> allOrders = findLoggedInUserOrders();
+        if (allOrders == null) {
+            return null;
+        }
         Order pendingOrder = null;
         for(Order o : allOrders){
             if(o.getStatus().equals(OrderStatus.PENDING)){
@@ -75,10 +78,11 @@ public class OrderService {
                 getPendingOrder();
         Item item = itemService.findItemById(itemId);
         item.setColour(input.getColour());
-        item.setSize(input.getSize());
-        item.setPrice(item.getPrice() * item.getSize());
+        item.setWidth(input.getWidth());
+        item.setHeight(input.getHeight());
+//        item.setPrice(item.getPrice() * (input.getHeight() * input.getWidth()) /10_000);
         pendingOrder.getItems().add(item);
-        pendingOrder.setTotalPrice(pendingOrder.getTotalPrice() + item.getPrice());
+        pendingOrder.setTotalPrice(pendingOrder.getTotalPrice() + item.getPrice() * (input.getHeight() * input.getWidth()) /10_000);
         orderRepository.save(pendingOrder);
         return pendingOrder;
     }
@@ -88,15 +92,15 @@ public class OrderService {
         if (pendingOrder == null) {
             throw new Exception("There is no pending order.");
         }
-//        pendingOrder.setTotalPrice(pendingOrder.getTotalPrice() - itemRepository.findById(itemId).getPrice());
         pendingOrder.getItems().remove(itemRepository.findById(itemId));
+        pendingOrder.setTotalPrice(pendingOrder.getTotalPrice() - itemRepository.findById(itemId).getPrice());
         orderRepository.save(pendingOrder);
         return pendingOrder;
     }
     public Order placeOrder(){
         Order orderToSend = getPendingOrder();
-        System.out.println("pending: " + orderToSend.toString());
         orderToSend.setStatus(OrderStatus.SENT);
+        orderToSend.setCreatedAt(LocalDateTime.now());
         orderRepository.save(orderToSend);
         return orderToSend;
     }

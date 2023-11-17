@@ -6,6 +6,6 @@ export interface Order {
   status: string,
   totalPrice: number,
   createdAt: Date,
-  user: User,
+  //user: User,
   items: Item[]
 }

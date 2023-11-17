@@ -4,13 +4,17 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 
 import { AppComponent } from './app.component';
 import { UsersComponent } from './components/users/users.component';
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import { OrderComponent } from './components/order/order.component';
 import { ItemsComponent } from './components/items/items.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { ItemDetailsComponent } from './components/item-details/item-details.component';
 import {FormsModule} from "@angular/forms";
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {AuthInterceptor} from "./auth.interceptor";
+import { ReactiveFormsModule } from '@angular/forms';
+import {AuthComponent} from "./components/auth/auth.component";
+import { RegisterComponent } from './components/register/register.component';
 
 @NgModule({
   declarations: [
@@ -19,16 +23,21 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     OrderComponent,
     ItemsComponent,
     UserDetailsComponent,
-    ItemDetailsComponent
+    ItemDetailsComponent,
+    AuthComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true},
+  ],
+  bootstrap: [AppComponent, RegisterComponent, AuthComponent]
 })
 export class AppModule { }

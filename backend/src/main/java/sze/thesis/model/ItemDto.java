@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 import sze.thesis.persistence.entity.Item;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -15,13 +14,15 @@ import java.util.List;
 @SuperBuilder
 public class ItemDto implements Serializable {
     private String type;
-    private double size;
+    private double width;
+    private double height;
     private String colour;
     private double price;
 
     public ItemDto(Item item) {
         this.type = item.getType();
-        this.size = item.getSize();
+        this.width = item.getWidth();
+        this.height = item.getHeight();
         this.colour = item.getColour();
         this.price = item.getPrice();
     }
@@ -30,7 +31,8 @@ public class ItemDto implements Serializable {
     public String toString() {
         return "ItemDto{" +
                 "type='" + type + '\'' +
-                ", size=" + size +
+                ", width=" + width +
+                ", height=" + height +
                 ", colour='" + colour + '\'' +
                 ", price=" + price +
                 '}';

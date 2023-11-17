@@ -1,0 +1,48 @@
+  <form (ngSubmit)="register()" [formGroup]="registrationForm">
+    <div class="text-center mb-3">
+      <!-- First name input -->
+      <div class="form-outline mb-4">
+        <input type="text" id="registerName" class="form-control" formControlName="firstName" />
+        <label class="form-label" for="registerName">Vezetéknév</label>
+      </div>
+
+      <!-- Last name input -->
+      <div class="form-outline mb-4">
+        <input type="text" id="registerUsername" class="form-control" formControlName="lastName" />
+        <label class="form-label" for="registerUsername">Keresztnév</label>
+      </div>
+
+      <!-- Email input -->
+      <div class="form-outline mb-4">
+        <input type="email" id="registerEmail" class="form-control" formControlName="email" />
+        <label class="form-label" for="registerEmail">E-mail</label>
+      </div>
+
+      <!-- Password input -->
+      <div class="form-outline mb-4">
+        <input type="password" id="registerPassword" class="form-control" formControlName="password" />
+        <label class="form-label" for="registerPassword">Jelszó</label>
+      </div>
+
+      <!-- Phone input -->
+      <div class="form-outline mb-4">
+        <input type="text" id="phone" class="form-control" formControlName="phone" />
+        <label class="form-label" for="phone">Telefonszám</label>
+      </div>
+
+      <!-- City input -->
+      <div class="form-outline mb-4">
+        <input type="text" id="city" class="form-control" formControlName="city" />
+        <label class="form-label" for="city">Település</label>
+      </div>
+
+      <!-- Address input -->
+      <div class="form-outline mb-4">
+        <input type="text" id="address" class="form-control" formControlName="address" />
+        <label class="form-label" for="address">Utca, házszám</label>
+      </div>
+
+      <!-- Submit button -->
+      <button type="submit" class="btn btn-primary btn-block mb-3">Regisztráció</button>
+    </div>
+  </form>

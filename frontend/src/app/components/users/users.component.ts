@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {UserService} from "../../service/user.service";
 import {User} from "../../model/user";
 
@@ -8,17 +8,8 @@ import {User} from "../../model/user";
   styleUrls: ['./users.component.css']
 })
 export class UsersComponent implements OnInit {
-  users: User[] = [];
+  userService: UserService = inject(UserService);
 
-  constructor(private userService: UserService) {
-  }
-
-  ngOnInit(): void {
-    this.getUsers();
-  }
-
-  getUsers(): void {
-    this.userService.getUsers()
-      .subscribe(users => this.users = users);
+  ngOnInit() {
   }
 }
